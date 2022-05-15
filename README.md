@@ -3,7 +3,7 @@
 A realtime code editor 
 
 - Github (https://github.com/adityakmr7/codeshare-editor)
-- Demo (https://github.com/adityakmr7/codeshare-editor)
+- Demo (https://codeshare-editor.herokuapp.com/)
 
 ## Screenshot
 
