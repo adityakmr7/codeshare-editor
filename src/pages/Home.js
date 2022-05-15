@@ -11,19 +11,19 @@ function Home() {
     e.preventDefault();
     const id = uuidV4();
     setRoomId(id);
-    toast.success('Created a new Room');
+    toast.success("Created a new Room");
   };
   const handleJoinRoom = () => {
-    if(!roomId || !username) {
-      return
+    if (!roomId || !username) {
+      return;
     }
-    navigate(`/editor/${roomId}`,{
-        state:{
-            username
-        }
-    })
+    navigate(`/editor/${roomId}`, {
+      state: {
+        username,
+      },
+    });
   };
-  
+
   return (
     <div
       style={{
@@ -32,23 +32,47 @@ function Home() {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
+        backgroundColor:'#4C4A48'
       }}
     >
-      <div style={{ display: "block" }}>
+      <div
+        style={{
+          backgroundColor: "#767676",
+          padding: "20px 40px",
+          flexDirection: "column",
+          display: "flex",
+        }}
+      >
         <input
+          style={{
+            margin: '10px 0px',
+            padding: '5px 10px',
+            border:'none',
+            
+          }}
           onChange={(e) => setRoomId(e.target.value)}
           value={roomId}
           type="text"
           className=""
-          placeholder="Enter RoomID"
+          placeholder="Enter Room ID"
         />
+
         <input
+        style={{
+          margin: '10px 0px',
+          padding: '5px 10px',
+          border:'none'
+        }}
           value={username}
           onChange={(e) => setusername(e.target.value)}
           type="text"
-          placeholder="Enter user name"
+          placeholder="Enter Username"
         />
-        <button onClick={handleJoinRoom}>Join Room</button>
+        <button style={{
+          margin:'10px 0px',
+          padding: '10px 5px',
+          cursor:'pointer'
+        }} onClick={handleJoinRoom}>Join Room</button>
         <div>
           <p>If you don't have an invite then create</p>
           <span>

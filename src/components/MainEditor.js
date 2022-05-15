@@ -18,8 +18,12 @@ const MainEditor =({ socketRef, roomId, onCodeChange }) => {
           theme: "dracula",
           autoCloseTags: true,
           lineNumbers: true,
+          lineWrapping:true,
+          tabSize: 4,
+
+
         }
-      );
+      ).setSize('100%', '100vh');
       editorRef.current.on("change", (instance, changes) => {
         const { origin } = changes;
         const code = instance.getValue();
@@ -32,6 +36,7 @@ const MainEditor =({ socketRef, roomId, onCodeChange }) => {
         }
       });
     }
+    
     init();
 
   }, []);
@@ -52,7 +57,7 @@ const MainEditor =({ socketRef, roomId, onCodeChange }) => {
   console.log('Rerendering......')
   return (
     <>
-      <textarea id="codemirror" />
+      <textarea  id="codemirror" />
     </>
   );
 }
