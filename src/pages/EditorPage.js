@@ -1,30 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
 import Avatar from "react-avatar";
 import toast from "react-hot-toast";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ACTIONS from "../actions";
 import MainEditor from "../components/MainEditor";
 import { initSocket } from "../socket";
 
-function Editor() {
+function EditorPage() {
+    const socketRef = useRef(null);
+    const codeRef = useRef(null);
   const location = useLocation();
   const params = useParams();
+  const reactNavigation = useNavigate();
 
   const [clients, setClients] = useState([]);
 
-  const socketRef = useRef(null);
-  const codeRef = useRef(null);
 
-  const handleErrors = (err) => {
-    console.log(err);
-  };
+
+  
 
   useEffect(() => {
     const init = async () => {
       socketRef.current = await initSocket();
       socketRef.current.on("connection_error", (err) => handleErrors(err));
       socketRef.current.on("connection_failed", (err) => handleErrors(err));
-
+      const handleErrors = (err) => {
+       
+        toast.error('Socket connection failed, try again later.');
+        reactNavigation('/');
+      };
       socketRef.current.emit(ACTIONS.JOIN, {
         roomId: params.id,
         username: location.state?.username,
@@ -57,10 +61,11 @@ function Editor() {
     init();
     return () => {
       if (socketRef.current) {
+        socketRef.current.disconnect();
         socketRef.current.off(ACTIONS.JOINED);
         socketRef.current.off(ACTIONS.DISCONNECTED);
 
-        socketRef.current.disconnect();
+        
       }
     };
   }, []);
@@ -75,8 +80,12 @@ function Editor() {
   };
 
   const handleLeaveRoom = () => {
-    navigator("/");
+    reactNavigation("/");
   };
+  const handleCodeChange = (code) => {
+    codeRef.current = code;
+  }
+  console.log('PrentComponent.....')
   return (
     <div>
       <div style={{ backgroundColor: "cyan", padding:'0px 10px' }} className="aside">
@@ -110,9 +119,7 @@ function Editor() {
       <div>
         <MainEditor
           socketRef={socketRef}
-          onCodeChange={(code) => {
-            codeRef.current = code;
-          }}
+          onCodeChange={handleCodeChange}
           roomId={params.id}
         />
       </div>
@@ -120,4 +127,4 @@ function Editor() {
   );
 }
 
-export default Editor;
+export default EditorPage;
