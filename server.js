@@ -3,15 +3,10 @@ const express = require('express');
 const app = express();
 
 const {Server} = require('socket.io');
-
-
 const http = require('http');
 const ACTIONS = require('./src/actions');
 const path = require('path');
-
-
 const server = http.createServer(app);
-
 const io = new Server(server);
 app.use(express.static('build'))
 app.use((req,res,next)  => {

@@ -10,8 +10,8 @@ import ACTIONS from "../actions";
 const MainEditor =({ socketRef, roomId, onCodeChange }) => {
   const editorRef = useRef(null);
   useEffect(() => {
-    const init = async()=> {
-      editorRef.current = Codemirror.fromTextArea(
+    async function init(){
+      editorRef.current =  Codemirror.fromTextArea(
         document.getElementById("codemirror"),
         {
           mode: "javascript",
@@ -20,13 +20,12 @@ const MainEditor =({ socketRef, roomId, onCodeChange }) => {
           lineNumbers: true,
           lineWrapping:true,
           tabSize: 4,
-
-
         }
-      ).setSize('100%', '100vh');
+      );
       editorRef.current.on("change", (instance, changes) => {
         const { origin } = changes;
         const code = instance.getValue();
+       
         onCodeChange(code);
         if (origin !== "setValue") {
           socketRef.current.emit(ACTIONS.CODE_CHANGE, {
@@ -35,13 +34,24 @@ const MainEditor =({ socketRef, roomId, onCodeChange }) => {
           });
         }
       });
+      
     }
     
     init();
 
   }, []);
+
+ 
+   
+
+   
+
+    
+ 
+
   useEffect(() => {
     if (socketRef.current) {
+      
       socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
         if (code !== null) {
           editorRef.current.setValue(code);
@@ -54,7 +64,7 @@ const MainEditor =({ socketRef, roomId, onCodeChange }) => {
       }
     };
   }, [socketRef.current]);
-  console.log('Rerendering......')
+  
   return (
     <>
       <textarea  id="codemirror" />
