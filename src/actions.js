@@ -1,5 +1,5 @@
 const ACTIONS = {
-    JOIN: 'join',
+    JOIN: 'JOIN',
     JOINED:'JOINED',
     DISCONNECTED:'DISCONNECTED',
     CODE_CHANGE:'CODE_CHANGE',
